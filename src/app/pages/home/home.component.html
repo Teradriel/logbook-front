@@ -5,328 +5,196 @@
       <th scope="col">Actividad</th>
       <th scope="col">Comentarios y notas</th>
       <th scope="col">
-        <button class="btn"><fa-icon [icon]="faPlus"></fa-icon></button>
+        <button class="btn" data-bs-toggle="modal" data-bs-target="#newModal">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+        <div
+          class="modal fade"
+          id="newModal"
+          tabindex="-1"
+          aria-labelledby="newModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="newModalLabel">
+                  Agregar actividad
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <form
+                class="mx-2 my-auto"
+                (ngSubmit)="newActivity()"
+                [formGroup]="newForm"
+              >
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="activity">Actividad</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="activity"
+                      placeholder="Ingrese una actividad"
+                      formControlName="activity"
+                      required
+                    />
+                    <label for="date">Fecha</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="date"
+                      placeholder="Fecha (DD/MM/AAAA)"
+                      formControlName="date"
+                      required
+                    />
+                    <label for="notes">Comentarios y notas</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="notes"
+                      placeholder="Comentarios y notas"
+                      formControlName="notes"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                  >
+                    Guardar actividad
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </th>
     </tr>
   </thead>
-  <tbody class="table-group-divider">
-    <tr>
-      <th scope="row">Fecha</th>
-      <td>Actividad</td>
-      <td>Comentario</td>
+  <tbody>
+    <tr class="table-group-divider" *ngFor="let act of activities">
+      <th scope="row">{{ act.date }}</th>
+      <td>{{ act.activity }}</td>
+      <td>{{ act.notes }}</td>
       <td>
-        <button class="btn"><fa-icon [icon]="faEdit"></fa-icon></button>
+        <div id="edit">
+          <a
+            type="button"
+            class="btn dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </a>
+          <div class="dropdown-menu">
+            <form
+              class="px-4 py-3"
+              (ngSubmit)="changeActivity($event, act.id)"
+              [formGroup]="editForm"
+            >
+              <h5>Editar actividad</h5>
+              <div class="mb-3">
+                <label for="date">Fecha</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="date"
+                  placeholder="{{ act.date }}"
+                  formControlName="date"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="activity">Actividad</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="activity"
+                  placeholder="{{ act.activity }}"
+                  formControlName="activity"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="notes">Comentarios y notas</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="notes"
+                  placeholder="{{ act.notes }}"
+                  formControlName="notes"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success">
+                Guardar actividad
+              </button>
+            </form>
+          </div>
+        </div>
+        <div id="delete">
+          <a
+            type="button"
+            class="btn dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </a>
+          <div class="dropdown-menu">
+            <form
+              class="px-4 py-3"
+              (ngSubmit)="removeActivity(act.id)"
+              [formGroup]="deleteForm"
+            >
+              <h5>¿Estás seguro de querer borrar la actividad?</h5>
+              <div class="mb-3">
+                <label for="date">Fecha</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="date"
+                  placeholder="{{ act.date }}"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="activity">Actividad</label>
+                <input
+                  type="text"
+                  class="form-control disabled"
+                  id="activity"
+                  placeholder="{{ act.activity }}"
+                  readonly
+                />
+              </div>
+              <button type="submit" class="btn btn-danger">
+                Borrar actividad
+              </button>
+            </form>
+          </div>
+        </div>
       </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">ultimo</th>
-      <td>ultimo</td>
-      <td>ultimo</td>
     </tr>
   </tbody>
 </table>

@@ -1,6 +1,8 @@
 //Angular imports
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Routing imports
 import { AppRoutingModule } from './app-routing.module';
@@ -15,8 +17,6 @@ import { FooterComponent } from './shared/footer/footer.component';
 //Styles imports
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-//Services imports
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +25,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HeaderComponent,
     FooterComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
